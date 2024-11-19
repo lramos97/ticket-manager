@@ -1,5 +1,6 @@
 package com.boxoffice.ticketmanager.entity;
 
+import com.boxoffice.ticketmanager.dtos.FilmDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -23,9 +24,9 @@ public class Film {
     @Enumerated(EnumType.STRING)
     private IndicativeRating indicativeRating;
 
-    public Film(String title, Genre genre, IndicativeRating indicativeRating) {
-        this.title = title;
-        this.genre = genre;
-        this.indicativeRating = indicativeRating;
+    public Film(FilmDTO data) {
+        this.title = data.title();
+        this.genre = data.genre();
+        this.indicativeRating = data.indicativeRating();
     }
 }
