@@ -1,10 +1,7 @@
 package com.boxoffice.ticketmanager.services;
 
-import com.boxoffice.ticketmanager.dtos.FilmDTO;
 import com.boxoffice.ticketmanager.dtos.MovieSessionDTO;
-import com.boxoffice.ticketmanager.entity.Film;
-import com.boxoffice.ticketmanager.entity.MovieSession;
-import com.boxoffice.ticketmanager.repositories.FilmRepository;
+import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

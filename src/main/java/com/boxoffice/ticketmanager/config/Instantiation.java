@@ -1,9 +1,9 @@
 package com.boxoffice.ticketmanager.config;
 
-import com.boxoffice.ticketmanager.entity.Film;
-import com.boxoffice.ticketmanager.entity.Genre;
-import com.boxoffice.ticketmanager.entity.IndicativeRating;
-import com.boxoffice.ticketmanager.entity.MovieSession;
+import com.boxoffice.ticketmanager.entity.Film.Film;
+import com.boxoffice.ticketmanager.entity.Film.Genre;
+import com.boxoffice.ticketmanager.entity.Film.IndicativeRating;
+import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.repositories.FilmRepository;
 import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;

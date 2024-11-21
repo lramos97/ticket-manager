@@ -1,7 +1,7 @@
-package com.boxoffice.ticketmanager.entity;
+package com.boxoffice.ticketmanager.entity.Film;
 
 import com.boxoffice.ticketmanager.dtos.FilmDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Film implements Serializable {
+public class Film {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

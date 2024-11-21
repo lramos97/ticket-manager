@@ -1,4 +1,4 @@
-package com.boxoffice.ticketmanager.entity;
+package com.boxoffice.ticketmanager.entity.Film;
 
 public enum IndicativeRating {
 

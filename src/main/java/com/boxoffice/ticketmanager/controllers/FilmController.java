@@ -1,7 +1,7 @@
 package com.boxoffice.ticketmanager.controllers;
 
 import com.boxoffice.ticketmanager.dtos.FilmDTO;
-import com.boxoffice.ticketmanager.entity.Film;
+import com.boxoffice.ticketmanager.entity.Film.Film;
 import com.boxoffice.ticketmanager.services.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
