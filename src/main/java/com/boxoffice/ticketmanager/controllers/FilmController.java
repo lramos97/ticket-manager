@@ -31,9 +31,7 @@ public class FilmController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
-
         filmService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

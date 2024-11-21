@@ -14,8 +14,8 @@ public class FilmService {
     @Autowired
     private FilmRepository repository;
 
-    public Film findById(Long id) throws Exception {
-        return this.repository.findById(id).orElseThrow(() -> new Exception("Film not found"));
+    public Film findfilmById(Long id) throws Exception {
+        return this.repository.findFilmById(id).orElseThrow(() -> new Exception("Film not found"));
     }
 
     public Film createFilm(FilmDTO data) {
@@ -33,7 +33,7 @@ public class FilmService {
     }
 
     public void delete(Long id) throws Exception {
-        findById(id);
+        findfilmById(id);
         repository.deleteById(id);
     }
 }
