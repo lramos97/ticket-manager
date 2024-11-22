@@ -45,10 +45,11 @@ public class MovieSession {
     }
 
     public void reserveSeat() {
-        if (availableSeats <= 0) {
-            throw new IllegalStateException("No seats available for this session");
+        if (this.availableSeats > 0) {
+            this.availableSeats--;
+        } else {
+            throw new IllegalStateException("No available seats for this session.");
         }
-        availableSeats--;
     }
 }
 

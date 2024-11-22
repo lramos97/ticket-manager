@@ -13,7 +13,7 @@ public class FilmService {
     @Autowired
     private FilmRepository repository;
 
-    public Film findfilmById(Long id) throws Exception {
+    public Film findFilmById(Long id) throws Exception {
         return this.repository.findFilmById(id).orElseThrow(() -> new Exception("Film not found"));
     }
 
@@ -32,7 +32,7 @@ public class FilmService {
     }
 
     public void delete(Long id) throws Exception {
-        findfilmById(id);
+        findFilmById(id);
         repository.deleteById(id);
     }
 }

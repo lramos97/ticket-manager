@@ -8,7 +8,6 @@ import com.boxoffice.ticketmanager.repositories.TicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -35,13 +34,16 @@ public class TicketService {
         ticket.setTicketType(ticketDTO.type());
         ticket.calculatePrice(BASE_PRICE);
 
-
         movieSessionRepository.save(session);
         return ticketRepository.save(ticket);
     }
 
     public List<Ticket> getAllTickets() {
         return this.ticketRepository.findAll();
+    }
+
+    public Ticket findTicketById(Long id) throws Exception {
+        return this.ticketRepository.findTicketById(id).orElseThrow(() -> new Exception("Film not found"));
     }
 
     public List<TicketDTO> findTicketsBySession(Long sessionId) {

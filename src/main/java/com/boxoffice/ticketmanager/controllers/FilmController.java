@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -27,6 +26,12 @@ public class FilmController {
     public ResponseEntity<List<Film>> getAllFilms() {
         List<Film> films = this.filmService.getAllFilms();
         return new ResponseEntity<>(films, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Film> getFilmById(@PathVariable Long id) throws Exception {
+        Film film = filmService.findFilmById(id);
+        return ResponseEntity.ok(film);
     }
 
     @DeleteMapping("/{id}")

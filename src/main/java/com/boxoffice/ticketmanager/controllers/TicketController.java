@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -24,9 +23,15 @@ public class TicketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ticket>> getAllFilms() {
+    public ResponseEntity<List<Ticket>> getAllTickets() {
         List<Ticket> tickets = this.ticketService.getAllTickets();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Ticket> getTicketById(@PathVariable Long id) throws Exception {
+        Ticket ticket = ticketService.findTicketById(id);
+        return ResponseEntity.ok(ticket);
     }
 
     @GetMapping("/session/{sessionId}")

@@ -9,6 +9,7 @@ import com.boxoffice.ticketmanager.entity.Ticket.TicketType;
 import com.boxoffice.ticketmanager.repositories.FilmRepository;
 import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
+import com.boxoffice.ticketmanager.services.MovieSessionService;
 import com.boxoffice.ticketmanager.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +28,9 @@ public class Instantiation implements CommandLineRunner {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    MovieSessionService movieSessionService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -50,11 +54,21 @@ public class Instantiation implements CommandLineRunner {
 
         movieSessionRepository.saveAll(Arrays.asList(s1,s2,s3,s4,s5));
 
-        Ticket t1 = new Ticket("Maria", s1, 33, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
-        Ticket t2 = new Ticket("João", s1, 27, TicketType.HALF_PRICE, TicketService.BASE_PRICE);
-        Ticket t3 = new Ticket("Carlos", s2, 11, TicketType.HALF_PRICE, TicketService.BASE_PRICE);
-        Ticket t4 = new Ticket("Laura", s4, 58, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
-        Ticket t5 = new Ticket("Mauro", s5, 20, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
+        Ticket t1 = new Ticket("Maria", s1, 1, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
+
+        movieSessionService.updateSession(s1.getId());
+
+        Ticket t2 = new Ticket("João", s1, 2, TicketType.HALF_PRICE, TicketService.BASE_PRICE);
+        movieSessionService.updateSession(s1.getId());
+
+        Ticket t3 = new Ticket("Carlos", s2, 1, TicketType.HALF_PRICE, TicketService.BASE_PRICE);
+        movieSessionService.updateSession(s2.getId());
+
+        Ticket t4 = new Ticket("Laura", s4, 1, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
+        movieSessionService.updateSession(s4.getId());
+
+        Ticket t5 = new Ticket("Mauro", s5, 1, TicketType.FULL_PRICE, TicketService.BASE_PRICE);
+        movieSessionService.updateSession(s5.getId());
 
         ticketRepository.saveAll(Arrays.asList(t1, t2, t3, t4, t5));
     }
