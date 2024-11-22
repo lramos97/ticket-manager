@@ -5,8 +5,6 @@ import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

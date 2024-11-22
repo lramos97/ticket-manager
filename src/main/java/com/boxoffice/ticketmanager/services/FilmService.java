@@ -5,7 +5,6 @@ import com.boxoffice.ticketmanager.entity.Film.Film;
 import com.boxoffice.ticketmanager.repositories.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

@@ -1,7 +1,11 @@
 package com.boxoffice.ticketmanager.services;
 
+import com.boxoffice.ticketmanager.dtos.TicketDTO;
+import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
+import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,18 +14,45 @@ import java.util.List;
 @Service
 public class TicketService {
 
+    public static final Double BASE_PRICE = 30.0;
     @Autowired
-    private TicketRepository repository;
+    private TicketRepository ticketRepository;
 
-    public Ticket findTicketById(Long id) throws Exception {
-        return this.repository.findTicketById(id).orElseThrow(() -> new Exception("Ticket not found"));
+    @Autowired
+    private MovieSessionRepository movieSessionRepository;
+
+
+    public Ticket createTicket(TicketDTO ticketDTO) {
+        MovieSession session = movieSessionRepository.findById(ticketDTO.movieSession().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Session not found"));
+
+        session.reserveSeat();
+
+        Ticket ticket = new Ticket();
+        ticket.setBuyer(ticketDTO.buyer());
+        ticket.setMovieSession(session);
+        ticket.setSeat(session.getAvailableSeats() + 1);
+        ticket.setTicketType(ticketDTO.type());
+        ticket.calculatePrice(BASE_PRICE);
+
+
+        movieSessionRepository.save(session);
+        return ticketRepository.save(ticket);
     }
 
     public List<Ticket> getAllTickets() {
-        return this.repository.findAll();
+        return this.ticketRepository.findAll();
     }
 
-    public void saveTicket(Ticket ticket) {
-        this.repository.save(ticket);
+    public List<TicketDTO> findTicketsBySession(Long sessionId) {
+        return ticketRepository.findByMovieSessionId(sessionId).stream()
+                .map(ticket -> new TicketDTO(
+                        ticket.getBuyer(),
+                        ticket.getMovieSession(),
+                        ticket.getSeat(),
+                        ticket.getTicketType()
+                ))
+                .toList();
     }
 }
+
