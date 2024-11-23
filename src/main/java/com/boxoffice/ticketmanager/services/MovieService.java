@@ -2,6 +2,7 @@ package com.boxoffice.ticketmanager.services;
 
 import com.boxoffice.ticketmanager.dtos.MovieDTO;
 import com.boxoffice.ticketmanager.entity.Movie.Movie;
+import com.boxoffice.ticketmanager.exceptions.MovieNotFoundException;
 import com.boxoffice.ticketmanager.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,8 @@ public class MovieService {
     @Autowired
     private MovieRepository repository;
 
-    public Movie findMovieById(Long id) throws Exception {
-        return this.repository.findMovieById(id).orElseThrow(() -> new Exception("Movie not found"));
+    public Movie findMovieById(Long id) {
+        return this.repository.findMovieById(id).orElseThrow(MovieNotFoundException::new);
     }
 
     public Movie createMovie(MovieDTO data) {
@@ -31,7 +32,7 @@ public class MovieService {
         this.repository.save(movie);
     }
 
-    public void delete(Long id) throws Exception {
+    public void delete(Long id) {
         findMovieById(id);
         repository.deleteById(id);
     }

@@ -43,13 +43,5 @@ public class MovieSession {
         this.startTime = data.startTime();
         this.availableSeats = data.availableSeats();
     }
-
-    public void reserveSeat() {
-        if (this.availableSeats > 0) {
-            this.availableSeats--;
-        } else {
-            throw new IllegalStateException("No available seats for this session.");
-        }
-    }
 }
 
