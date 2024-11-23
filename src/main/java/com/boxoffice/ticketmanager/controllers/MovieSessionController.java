@@ -28,13 +28,13 @@ public class MovieSessionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieSession> getSessionById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<MovieSession> getSessionById(@PathVariable Long id){
         MovieSession session = movieSessionService.findSessionById(id);
         return ResponseEntity.ok(session);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         movieSessionService.delete(id);
         return ResponseEntity.noContent().build();
     }

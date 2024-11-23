@@ -29,13 +29,13 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Movie> getMovieById(@PathVariable Long id){
         Movie movie = movieService.findMovieById(id);
         return ResponseEntity.ok(movie);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         movieService.delete(id);
         return ResponseEntity.noContent().build();
     }

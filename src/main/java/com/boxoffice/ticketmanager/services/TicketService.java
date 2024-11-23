@@ -3,9 +3,7 @@ package com.boxoffice.ticketmanager.services;
 import com.boxoffice.ticketmanager.dtos.TicketDTO;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
-import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,15 +15,14 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Autowired
-    private MovieSessionRepository movieSessionRepository;
-
+	@Autowired
+	private MovieSessionService movieSessionService;
 
     public Ticket createTicket(TicketDTO ticketDTO) {
-        MovieSession session = movieSessionRepository.findById(ticketDTO.movieSession().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Session not found"));
 
-        session.reserveSeat();
+		MovieSession session = movieSessionService.findSessionById(ticketDTO.movieSession().getId());
+
+		movieSessionService.reserveSeat(ticketDTO.movieSession().getId());
 
         Ticket ticket = new Ticket();
         ticket.setBuyer(ticketDTO.buyer());
@@ -34,7 +31,7 @@ public class TicketService {
         ticket.setTicketType(ticketDTO.type());
         ticket.calculatePrice(BASE_PRICE);
 
-        movieSessionRepository.save(session);
+		movieSessionService.save(session);
         return ticketRepository.save(ticket);
     }
 
