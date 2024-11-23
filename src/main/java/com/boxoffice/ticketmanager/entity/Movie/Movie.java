@@ -29,13 +29,6 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieSession> sessions = new ArrayList<>();
 
-    public Movie(Long id, String title, Genre genre, IndicativeRating indicativeRating) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-        this.indicativeRating = indicativeRating;
-    }
-
     public Movie(MovieDTO data) {
         this.title = data.title();
         this.genre = data.genre();
