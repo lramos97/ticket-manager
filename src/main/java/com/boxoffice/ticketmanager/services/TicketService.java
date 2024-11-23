@@ -20,9 +20,8 @@ public class TicketService {
 
     public Ticket createTicket(TicketDTO ticketDTO) {
 
-		MovieSession session = movieSessionService.findSessionById(ticketDTO.movieSession().getId());
-
-		movieSessionService.reserveSeat(ticketDTO.movieSession().getId());
+        MovieSession session = movieSessionService.findSessionById(ticketDTO.movieSession().getId());
+        movieSessionService.reserveSeat(ticketDTO.movieSession().getId());
 
         Ticket ticket = new Ticket();
         ticket.setBuyer(ticketDTO.buyer());
@@ -31,7 +30,7 @@ public class TicketService {
         ticket.setTicketType(ticketDTO.type());
         ticket.calculatePrice(BASE_PRICE);
 
-		movieSessionService.save(session);
+        movieSessionService.save(session);
         return ticketRepository.save(ticket);
     }
 
