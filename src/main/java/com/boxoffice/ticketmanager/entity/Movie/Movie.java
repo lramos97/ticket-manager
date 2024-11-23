@@ -1,6 +1,6 @@
-package com.boxoffice.ticketmanager.entity.Film;
+package com.boxoffice.ticketmanager.entity.Movie;
 
-import com.boxoffice.ticketmanager.dtos.FilmDTO;
+import com.boxoffice.ticketmanager.dtos.MovieDTO;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "film")
+@Table(name = "movie")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Film {
+public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +26,17 @@ public class Film {
     private Genre genre;
     @Enumerated(EnumType.STRING)
     private IndicativeRating indicativeRating;
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieSession> sessions = new ArrayList<>();
 
-    public Film(Long id, String title, Genre genre, IndicativeRating indicativeRating) {
+    public Movie(Long id, String title, Genre genre, IndicativeRating indicativeRating) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.indicativeRating = indicativeRating;
     }
 
-    public Film(FilmDTO data) {
+    public Movie(MovieDTO data) {
         this.title = data.title();
         this.genre = data.genre();
         this.indicativeRating = data.indicativeRating();

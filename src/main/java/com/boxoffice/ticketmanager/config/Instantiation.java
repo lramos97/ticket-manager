@@ -1,12 +1,12 @@
 package com.boxoffice.ticketmanager.config;
 
-import com.boxoffice.ticketmanager.entity.Film.Film;
-import com.boxoffice.ticketmanager.entity.Film.Genre;
-import com.boxoffice.ticketmanager.entity.Film.IndicativeRating;
+import com.boxoffice.ticketmanager.entity.Movie.Movie;
+import com.boxoffice.ticketmanager.entity.Movie.Genre;
+import com.boxoffice.ticketmanager.entity.Movie.IndicativeRating;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
 import com.boxoffice.ticketmanager.entity.Ticket.TicketType;
-import com.boxoffice.ticketmanager.repositories.FilmRepository;
+import com.boxoffice.ticketmanager.repositories.MovieRepository;
 import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
 import com.boxoffice.ticketmanager.services.MovieSessionService;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 public class Instantiation implements CommandLineRunner {
 
     @Autowired
-    private FilmRepository filmRepository;
+    private MovieRepository movieRepository;
 
     @Autowired
     private MovieSessionRepository movieSessionRepository;
@@ -35,16 +35,16 @@ public class Instantiation implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        filmRepository.deleteAll();
+        movieRepository.deleteAll();
         movieSessionRepository.deleteAll();
         ticketRepository.deleteAll();
 
-        Film f1 = new Film(null,"Lion", Genre.DRAMA, IndicativeRating.TEENS_14_AND_UP);
-        Film f2 = new Film(null,"Minions", Genre.ANIMATION, IndicativeRating.GENERAL_AUDIENCE);
-        Film f3 = new Film(null,"Before you", Genre.ROMANCE, IndicativeRating.TEENS_14_AND_UP);
-        Film f4 = new Film(null,"The Substance", Genre.HORROR, IndicativeRating.ADULTS_ONLY);
+        Movie f1 = new Movie(null,"Lion", Genre.DRAMA, IndicativeRating.TEENS_14_AND_UP);
+        Movie f2 = new Movie(null,"Minions", Genre.ANIMATION, IndicativeRating.GENERAL_AUDIENCE);
+        Movie f3 = new Movie(null,"Before you", Genre.ROMANCE, IndicativeRating.TEENS_14_AND_UP);
+        Movie f4 = new Movie(null,"The Substance", Genre.HORROR, IndicativeRating.ADULTS_ONLY);
 
-        filmRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
+        movieRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
 
         MovieSession s1 = new MovieSession(null, f1, "10:30", 100);
         MovieSession s2 = new MovieSession(null, f1, "19:00", 100);

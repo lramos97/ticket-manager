@@ -1,6 +1,6 @@
 package com.boxoffice.ticketmanager.dtos;
 
-import com.boxoffice.ticketmanager.entity.Film.Film;
+import com.boxoffice.ticketmanager.entity.Movie.Movie;
 
-public record MovieSessionDTO(Film film, String startTime, int availableSeats) {
+public record MovieSessionDTO(Movie movie, String startTime, int availableSeats) {
 }

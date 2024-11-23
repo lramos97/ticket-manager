@@ -1,4 +1,4 @@
-package com.boxoffice.ticketmanager.entity.Film;
+package com.boxoffice.ticketmanager.entity.Movie;
 
 public enum Genre {
     ACTION,

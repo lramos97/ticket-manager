@@ -43,7 +43,7 @@ public class TicketService {
     }
 
     public Ticket findTicketById(Long id) throws Exception {
-        return this.ticketRepository.findTicketById(id).orElseThrow(() -> new Exception("Film not found"));
+        return this.ticketRepository.findTicketById(id).orElseThrow(() -> new Exception("Movie not found"));
     }
 
     public List<TicketDTO> findTicketsBySession(Long sessionId) {
