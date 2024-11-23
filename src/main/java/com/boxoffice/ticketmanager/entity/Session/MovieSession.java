@@ -1,7 +1,7 @@
 package com.boxoffice.ticketmanager.entity.Session;
 
 import com.boxoffice.ticketmanager.dtos.MovieSessionDTO;
-import com.boxoffice.ticketmanager.entity.Film.Film;
+import com.boxoffice.ticketmanager.entity.Movie.Movie;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -23,23 +23,23 @@ public class MovieSession {
     private Long id;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "film_id")
-    private Film film;
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
     private String startTime;
     private int availableSeats;
 
     @OneToMany(mappedBy = "movieSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets = new ArrayList<>();
 
-    public MovieSession(Long id, Film film, String startTime, int availableSeats) {
+    public MovieSession(Long id, Movie movie, String startTime, int availableSeats) {
         this.id = id;
-        this.film = film;
+        this.movie = movie;
         this.startTime = startTime;
         this.availableSeats = availableSeats;
     }
 
     public MovieSession(MovieSessionDTO data){
-        this.film = data.film();
+        this.movie = data.movie();
         this.startTime = data.startTime();
         this.availableSeats = data.availableSeats();
     }
