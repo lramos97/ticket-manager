@@ -46,6 +46,7 @@ public class MovieControllerTest {
 	void shouldCreateMovie() throws Exception {
 		MovieDTO movieDTO = new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE);
 		Movie movie = new Movie(movieDTO);
+		movie.setId(1L);
 
 		ArgumentCaptor<MovieDTO> captor = ArgumentCaptor.forClass(MovieDTO.class);
 		when(movieService.createMovie(captor.capture())).thenReturn(movie);
@@ -54,8 +55,10 @@ public class MovieControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(movieDTO)))
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.id").value(movie.getId()))
-			.andExpect(jsonPath("$.title").value(movie.getTitle()));
+			.andExpect(jsonPath("$.id").value(1))
+			.andExpect(jsonPath("$.title").value("Inception"))
+			.andExpect(jsonPath("$.genre").value("ACTION"))
+			.andExpect(jsonPath("$.indicativeRating").value("GENERAL_AUDIENCE"));
 
 		verify(movieService, times(1)).createMovie(captor.capture());
 	}
