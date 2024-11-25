@@ -1,4 +1,5 @@
 package com.boxoffice.ticketmanager.controllers;
+
 import com.boxoffice.ticketmanager.dtos.MovieSessionDTO;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.services.MovieSessionService;
@@ -6,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -16,7 +18,7 @@ public class MovieSessionController {
     private MovieSessionService movieSessionService;
 
     @PostMapping
-    public ResponseEntity<MovieSession> createSession(@RequestBody MovieSessionDTO session){
+    public ResponseEntity<MovieSession> createSession(@RequestBody MovieSessionDTO session) {
         MovieSession newSession = movieSessionService.createSession(session);
         return new ResponseEntity<>(newSession, HttpStatus.CREATED);
     }
@@ -28,13 +30,13 @@ public class MovieSessionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieSession> getSessionById(@PathVariable Long id){
+    public ResponseEntity<MovieSession> getSessionById(@PathVariable Long id) {
         MovieSession session = movieSessionService.findSessionById(id);
         return ResponseEntity.ok(session);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         movieSessionService.delete(id);
         return ResponseEntity.noContent().build();
     }

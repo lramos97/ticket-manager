@@ -7,6 +7,7 @@ import com.boxoffice.ticketmanager.exceptions.movieSessionException.NoSeatsAvail
 import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -37,12 +38,13 @@ public class MovieSessionService {
         findSessionById(id);
         repository.deleteById(id);
     }
+
     public void reserveSeat(Long sessionId) {
         MovieSession session = findSessionById(sessionId);
-		if (session.getAvailableSeats() <= 0) {
+        if (session.getAvailableSeats() <= 0) {
             throw new NoSeatsAvailableException();
         }
-		session.setAvailableSeats(session.getAvailableSeats() - 1);
-		repository.save(session);
+        session.setAvailableSeats(session.getAvailableSeats() - 1);
+        repository.save(session);
     }
 }

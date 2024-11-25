@@ -20,8 +20,8 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-	@Autowired
-	private MovieSessionService movieSessionService;
+    @Autowired
+    private MovieSessionService movieSessionService;
 
     public Ticket createTicket(TicketDTO ticketDTO) {
 
