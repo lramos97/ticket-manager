@@ -1,4 +1,4 @@
-package com.boxoffice.ticketmanager.exceptions;
+package com.boxoffice.ticketmanager.exceptions.movieException;
 
 public class MovieNotFoundException extends RuntimeException{
 	public MovieNotFoundException() {
