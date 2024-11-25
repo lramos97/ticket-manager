@@ -31,12 +31,6 @@ public class MovieSession {
     @OneToMany(mappedBy = "movieSession", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets = new ArrayList<>();
 
-    public MovieSession(Long id, Movie movie, String startTime, int availableSeats) {
-        this.id = id;
-        this.movie = movie;
-        this.startTime = startTime;
-        this.availableSeats = availableSeats;
-    }
 
     public MovieSession(MovieSessionDTO data){
         this.movie = data.movie();
