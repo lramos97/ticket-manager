@@ -26,6 +26,7 @@ public class MovieService {
     public Movie createMovie(MovieDTO data) {
 
         validateMovieGenre(data.genre());
+        validateIndicativeRating(data.indicativeRating());
 
         Movie newMovie = new Movie(data);
         this.saveMovie(newMovie);
