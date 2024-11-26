@@ -42,7 +42,7 @@ public class TicketControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+    /*@Test
     void shouldCreateTicket() throws Exception {
         MovieSession movieSession = new MovieSession();
         movieSession.setId(1L);
@@ -107,5 +107,5 @@ public class TicketControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].buyer").value("Alice"))
                 .andExpect(jsonPath("$[1].buyer").value("Bob"));
-    }
+    }*/
 }

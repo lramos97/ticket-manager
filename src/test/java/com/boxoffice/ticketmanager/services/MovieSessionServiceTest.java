@@ -112,5 +112,6 @@ public class MovieSessionServiceTest {
 
 		assertThrows(NoSeatsAvailableException.class, () -> movieSessionService.reserveSeat(1L));
 	}
+
 }
 
