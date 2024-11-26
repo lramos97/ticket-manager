@@ -43,6 +43,7 @@ public class Ticket {
         this.movieSession = data.movieSession();
         this.seat = data.seat();
         this.ticketType = data.type();
+        calculatePrice(data.basePrice());
     }
 
     public void calculatePrice(double basePrice) {
