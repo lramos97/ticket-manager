@@ -18,22 +18,38 @@ public class MovieSessionController {
     private MovieSessionService movieSessionService;
 
     @PostMapping
-    public ResponseEntity<MovieSession> createSession(@RequestBody MovieSessionDTO session) {
+    public ResponseEntity<MovieSessionDTO> createSession(@RequestBody MovieSessionDTO session) {
         MovieSession newSession = movieSessionService.createSession(session);
-        return new ResponseEntity<>(newSession, HttpStatus.CREATED);
+        return new ResponseEntity<>(new MovieSessionDTO(
+	        newSession.getMovie(),
+	        newSession.getStartTime(),
+	        newSession.getAvailableSeats()
+        ), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<MovieSession>> getAllSessions() {
-        List<MovieSession> sessions = this.movieSessionService.getAllSessions();
-        return new ResponseEntity<>(sessions, HttpStatus.OK);
-    }
+	@GetMapping
+	public ResponseEntity<List<MovieSessionDTO>> getAllSessions() {
+		List<MovieSessionDTO> sessionDTOs = movieSessionService.getAllSessions()
+			.stream()
+			.map(session -> new MovieSessionDTO(
+				session.getMovie(),
+				session.getStartTime(),
+				session.getAvailableSeats()))
+			.toList();
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MovieSession> getSessionById(@PathVariable Long id) {
-        MovieSession session = movieSessionService.findSessionById(id);
-        return ResponseEntity.ok(session);
-    }
+		return ResponseEntity.ok(sessionDTOs);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<MovieSessionDTO> getSessionById(@PathVariable Long id) {
+		MovieSession session = movieSessionService.findSessionById(id);
+		MovieSessionDTO sessionDTO = new MovieSessionDTO(
+			session.getMovie(),
+			session.getStartTime(),
+			session.getAvailableSeats()
+		);
+		return ResponseEntity.ok(sessionDTO);
+	}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

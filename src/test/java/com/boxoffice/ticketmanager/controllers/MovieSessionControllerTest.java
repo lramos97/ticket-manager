@@ -6,6 +6,7 @@ import com.boxoffice.ticketmanager.entity.Movie.Genre;
 import com.boxoffice.ticketmanager.entity.Movie.IndicativeRating;
 import com.boxoffice.ticketmanager.entity.Movie.Movie;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
+import com.boxoffice.ticketmanager.repositories.MovieRepository;
 import com.boxoffice.ticketmanager.services.MovieSessionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,84 +33,93 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class MovieSessionControllerTest {
 
+	@MockBean
+	private MovieSessionService movieSessionService;
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private MovieSessionService movieSessionService;
+	@Autowired
+	private MovieRepository movieRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void shouldCreateSession() throws Exception {
-        MovieDTO movieDTO = new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE);
-        Movie movie = new Movie(movieDTO);
-        MovieSessionDTO sessionDTO = new MovieSessionDTO(movie, "14:00", 100);
-        MovieSession session = new MovieSession(sessionDTO);
-        session.setId(1L);
+	@Test
+	void shouldCreateSession() throws Exception {
+		MovieDTO movieDTO = new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE);
+		Movie movie = new Movie(movieDTO);
+		movie.setId(1L);
+		movieRepository.save(movie);
 
-        when(movieSessionService.createSession(sessionDTO)).thenReturn(session);
+		MovieSessionDTO sessionDTO = new MovieSessionDTO(movie, "14:00", 100);
+		MovieSession session = new MovieSession(sessionDTO);
+		session.setId(1L);
 
-        mockMvc.perform(post("/sessions")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(sessionDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.movie.title").value("Inception"))
-                .andExpect(jsonPath("$.startTime").value("14:00"))
-                .andExpect(jsonPath("$.availableSeats").value(100));
+		when(movieSessionService.createSession(sessionDTO)).thenReturn(session);
 
-        verify(movieSessionService, times(1)).createSession(sessionDTO);
-    }
+		mockMvc.perform(post("/sessions")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(sessionDTO)))
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.movie.id").value("1"))
+			.andExpect(jsonPath("$.movie.title").value("Inception"))
+			.andExpect(jsonPath("$.movie.genre").value("ACTION"))
+			.andExpect(jsonPath("$.movie.indicativeRating").value("GENERAL_AUDIENCE"))
+			.andExpect(jsonPath("$.startTime").value("14:00"))
+			.andExpect(jsonPath("$.availableSeats").value(100));
 
-    @Test
-    void shouldGetAllSessions() throws Exception {
-        MovieSession session1 = new MovieSession(new MovieSessionDTO(
-                new Movie(new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
-                "14:00", 100));
-        session1.setId(1L);
-        MovieSession session2 = new MovieSession(new MovieSessionDTO(
-                new Movie(new MovieDTO("The Dark Knight", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
-                "18:00", 50));
-        session2.setId(2L);
-        List<MovieSession> sessions = Arrays.asList(session1, session2);
+		verify(movieSessionService, times(1)).createSession(sessionDTO);
+	}
 
-        when(movieSessionService.getAllSessions()).thenReturn(sessions);
+	@Test
+	void shouldGetAllSessions() throws Exception {
+		MovieSession session1 = new MovieSession(new MovieSessionDTO(
+			new Movie(new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
+			"14:00", 100));
+		session1.setId(1L);
+		MovieSession session2 = new MovieSession(new MovieSessionDTO(
+			new Movie(new MovieDTO("The Dark Knight", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
+			"18:00", 50));
+		session2.setId(2L);
+		List<MovieSession> sessions = Arrays.asList(session1, session2);
 
-        mockMvc.perform(get("/sessions"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].movie.title").value("Inception"))
-                .andExpect(jsonPath("$[1].id").value(2))
-                .andExpect(jsonPath("$[1].movie.title").value("The Dark Knight"));
+		when(movieSessionService.getAllSessions()).thenReturn(sessions);
 
-        verify(movieSessionService, times(1)).getAllSessions();
-    }
+		mockMvc.perform(get("/sessions"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].movie.title").value("Inception"))
+			.andExpect(jsonPath("$[0].startTime").value("14:00"))
+			.andExpect(jsonPath("$[0].availableSeats").value(100))
+			.andExpect(jsonPath("$[1].movie.title").value("The Dark Knight"))
+			.andExpect(jsonPath("$[1].startTime").value("18:00"))
+			.andExpect(jsonPath("$[1].availableSeats").value(50));
 
+		verify(movieSessionService, times(1)).getAllSessions();
+	}
 
-    @Test
-    void shouldGetSessionById() throws Exception {
-        MovieSession session = new MovieSession(new MovieSessionDTO(
-                new Movie(new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
-                "14:00", 100));
-        session.setId(1L);
+	@Test
+	void shouldGetSessionById() throws Exception {
+		MovieSession session = new MovieSession(new MovieSessionDTO(
+			new Movie(new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE)),
+			"14:00", 100));
+		session.setId(1L);
 
-        when(movieSessionService.findSessionById(1L)).thenReturn(session);
+		when(movieSessionService.findSessionById(1L)).thenReturn(session);
 
-        mockMvc.perform(get("/sessions/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.movie.title").value("Inception"))
-                .andExpect(jsonPath("$.availableSeats").value(100));
+		mockMvc.perform(get("/sessions/1"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.movie.title").value("Inception"))
+			.andExpect(jsonPath("$.startTime").value("14:00"))
+			.andExpect(jsonPath("$.availableSeats").value(100));
 
-        verify(movieSessionService, times(1)).findSessionById(1L);
-    }
+		verify(movieSessionService, times(1)).findSessionById(1L);
+	}
 
     @Test
     void shouldDeleteSession() throws Exception {
