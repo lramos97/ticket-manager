@@ -72,14 +72,14 @@ public class MovieServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGenreIsInvalid() {
+    void testWhenGenreIsInvalid() {
         MovieDTO invalidData = new MovieDTO("Inception", null, IndicativeRating.GENERAL_AUDIENCE);
 
         assertThrows(InvalidMovieGenreException.class, () -> movieService.createMovie(invalidData));
     }
 
     @Test
-    void shouldThrowExceptionWhenIndicativeRatingIsInvalid() {
+    void testWhenIndicativeRatingIsInvalid() {
         MovieDTO invalidData = new MovieDTO("Inception", Genre.ACTION, null);
 
         assertThrows(InvalidMovieGenreException.class, () -> movieService.createMovie(invalidData));
