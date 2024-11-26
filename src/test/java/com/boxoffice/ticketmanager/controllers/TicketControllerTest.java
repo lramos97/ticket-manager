@@ -4,6 +4,7 @@ import com.boxoffice.ticketmanager.dtos.TicketDTO;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
 import com.boxoffice.ticketmanager.entity.Ticket.TicketType;
+import com.boxoffice.ticketmanager.repositories.MovieSessionRepository;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
 import com.boxoffice.ticketmanager.services.MovieSessionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +35,9 @@ public class TicketControllerTest {
     @Autowired
     private TicketRepository ticketRepository;
 
+	@Autowired
+	private MovieSessionRepository movieSessionRepository;
+
     @Autowired
     MovieSessionService movieSessionService;
 
@@ -42,7 +46,7 @@ public class TicketControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    /*@Test
+    @Test
     void shouldCreateTicket() throws Exception {
         MovieSession movieSession = new MovieSession();
         movieSession.setId(1L);
@@ -56,31 +60,36 @@ public class TicketControllerTest {
                 TicketType.FULL_PRICE,
                 30.0
         );
-
-        mockMvc.perform(post("/tickets")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(ticketDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.buyer").value("John Doe"))
-                .andExpect(jsonPath("$.seat").value(1))
-                .andExpect(jsonPath("$.ticketType").value("FULL_PRICE"));
+	    mockMvc.perform(MockMvcRequestBuilders.post("/tickets")
+			    .contentType(MediaType.APPLICATION_JSON)
+			    .content(objectMapper.writeValueAsString(ticketDTO)))
+		    .andExpect(status().isCreated())
+		    .andExpect(jsonPath("$.buyer").value("John Doe"))
+		    .andExpect(jsonPath("$.seat").value(10))
+		    .andExpect(jsonPath("$.movieSession.tickets[0].ticketType").value("FULL_PRICE"));
     }
 
     @Test
     void shouldReturnAllTickets() throws Exception {
-        Ticket ticket = new Ticket("Jane Doe", new MovieSession(), 1, TicketType.HALF_PRICE, 15.0);
-        ticketRepository.save(ticket);
+	    MovieSession movieSession = new MovieSession();
+	    movieSession.setAvailableSeats(10);
+	    movieSessionRepository.save(movieSession);
+	    Ticket ticket = new Ticket("Jane Doe", movieSession, 1, TicketType.HALF_PRICE, 15.0);
+	    ticketRepository.save(ticket);
 
         mockMvc.perform(get("/tickets")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].buyer").value("Jane Doe"))
-                .andExpect(jsonPath("$[0].ticketType").value("HALF_PRICE"));
+	            .andExpect(jsonPath("$[0].buyer").value("Jane Doe"))
+	            .andExpect(jsonPath("$[0].movieSession.tickets[0].ticketType").value("HALF_PRICE"));
     }
 
     @Test
     void shouldReturnTicketById() throws Exception {
-        Ticket ticket = new Ticket("John Smith", new MovieSession(), 2, TicketType.FULL_PRICE, 30.0);
+	    MovieSession movieSession = new MovieSession();
+	    movieSession.setAvailableSeats(10);
+	    movieSessionRepository.save(movieSession);
+        Ticket ticket = new Ticket("John Smith", movieSession, 2, TicketType.FULL_PRICE, 30.0);
         ticket = ticketRepository.save(ticket);
 
         mockMvc.perform(get("/tickets/{id}", ticket.getId())
@@ -107,5 +116,5 @@ public class TicketControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].buyer").value("Alice"))
                 .andExpect(jsonPath("$[1].buyer").value("Bob"));
-    }*/
+    }
 }
