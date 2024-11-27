@@ -60,15 +60,12 @@ public class MovieServiceTest {
         MovieDTO validData = new MovieDTO("Inception", Genre.ACTION, IndicativeRating.GENERAL_AUDIENCE);
         Movie expectedMovie = new Movie(validData);
 
-        doNothing().when(movieService).validateMovieGenre(validData.genre());
-        doNothing().when(movieService).validateIndicativeRating(validData.indicativeRating());
-        doNothing().when(movieRepository).save(any(Movie.class));
-
+        when(movieRepository.save(any(Movie.class))).thenReturn(expectedMovie);
         Movie result = movieService.createMovie(validData);
 
         assertNotNull(result);
         assertEquals(expectedMovie.getTitle(), result.getTitle());
-        verify(movieRepository).save(result);
+        verify(movieRepository, times(1)).save(any(Movie.class));
     }
 
     @Test

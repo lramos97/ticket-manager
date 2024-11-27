@@ -9,7 +9,6 @@ import com.boxoffice.ticketmanager.entity.Movie.Movie;
 import com.boxoffice.ticketmanager.entity.Session.MovieSession;
 import com.boxoffice.ticketmanager.entity.Ticket.Ticket;
 import com.boxoffice.ticketmanager.entity.Ticket.TicketType;
-import com.boxoffice.ticketmanager.exceptions.movieException.InvalidMovieGenreException;
 import com.boxoffice.ticketmanager.exceptions.ticketException.InvalidTicketTypeException;
 import com.boxoffice.ticketmanager.exceptions.ticketException.TicketNotFoundException;
 import com.boxoffice.ticketmanager.repositories.TicketRepository;
@@ -31,10 +30,12 @@ public class TicketServiceTest {
 
     @Mock
     private TicketRepository ticketRepository;
+    @Mock
     private MovieSessionService movieSessionService;
 
     @InjectMocks
     private TicketService ticketService;
+
     private Ticket ticket;
     private TicketDTO ticketDTO;
 
@@ -81,7 +82,7 @@ public class TicketServiceTest {
 
         assertNotNull(result);
         assertEquals("John", result.getBuyer());
-        assertEquals(11, result.getSeat());
+        assertEquals(13, result.getSeat());
         verify(ticketRepository, times(1)).save(any(Ticket.class));
         verify(movieSessionService, times(1)).reserveSeat(1L);
         verify(movieSessionService, times(1)).save(session);

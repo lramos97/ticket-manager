@@ -74,13 +74,13 @@ public class TicketControllerTest {
 	    MovieSession movieSession = new MovieSession();
 	    movieSession.setAvailableSeats(10);
 	    movieSessionRepository.save(movieSession);
-	    Ticket ticket = new Ticket("Jane Doe", movieSession, 1, TicketType.HALF_PRICE, 15.0);
+	    Ticket ticket = new Ticket("John Doe", movieSession, 1, TicketType.HALF_PRICE, 15.0);
 	    ticketRepository.save(ticket);
 
         mockMvc.perform(get("/tickets")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-	            .andExpect(jsonPath("$[0].buyer").value("Jane Doe"))
+	            .andExpect(jsonPath("$[0].buyer").value("John Doe"))
 	            .andExpect(jsonPath("$[0].movieSession.tickets[0].ticketType").value("HALF_PRICE"));
     }
 
