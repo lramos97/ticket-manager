@@ -46,13 +46,13 @@ public class MovieService {
         repository.deleteById(id);
     }
 
-    private void validateMovieGenre(Genre genre) {
+    void validateMovieGenre(Genre genre) {
         if (genre == null || !EnumSet.allOf(Genre.class).contains(genre)) {
             throw new InvalidMovieGenreException();
         }
     }
 
-    private void validateIndicativeRating(IndicativeRating indicativeRating) {
+    void validateIndicativeRating(IndicativeRating indicativeRating) {
         if (indicativeRating == null || !EnumSet.allOf(IndicativeRating.class).contains(indicativeRating)) {
             throw new InvalidMovieGenreException();
         }

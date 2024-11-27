@@ -17,21 +17,42 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticketDTO) {
-        Ticket ticket = ticketService.createTicket(ticketDTO);
-        return ResponseEntity.ok(ticket);
+    public ResponseEntity<TicketDTO> createTicket(@RequestBody TicketDTO ticket) {
+        Ticket newticket = ticketService.createTicket(ticket);
+        return new ResponseEntity<>(new TicketDTO(
+                newticket.getBuyer(),
+                newticket.getMovieSession(),
+                newticket.getSeat(),
+                newticket.getTicketType(),
+                newticket.getPrice()
+        ), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        List<Ticket> tickets = this.ticketService.getAllTickets();
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    public ResponseEntity<List<TicketDTO>> getAllTickets() {
+        List<TicketDTO> ticketDTOs = ticketService.getAllTickets()
+                .stream()
+                .map(ticket -> new TicketDTO(
+                        ticket.getBuyer(),
+                        ticket.getMovieSession(),
+                        ticket.getSeat(),
+                        ticket.getTicketType(),
+                        ticket.getPrice()))
+                .toList();
+        return ResponseEntity.ok(ticketDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicketById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<TicketDTO> getTicketById(@PathVariable Long id) throws Exception {
         Ticket ticket = ticketService.findTicketById(id);
-        return ResponseEntity.ok(ticket);
+        TicketDTO ticketDTO = new TicketDTO(
+                ticket.getBuyer(),
+                ticket.getMovieSession(),
+                ticket.getSeat(),
+                ticket.getTicketType(),
+                ticket.getPrice());
+
+        return ResponseEntity.ok(ticketDTO);
     }
 
     @GetMapping("/session/{sessionId}")

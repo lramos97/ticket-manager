@@ -55,7 +55,9 @@ public class TicketService {
                         ticket.getBuyer(),
                         ticket.getMovieSession(),
                         ticket.getSeat(),
-                        ticket.getTicketType()
+                        ticket.getTicketType(),
+                        ticket.getPrice()
+
                 ))
                 .toList();
     }
